@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer contraseña</title>
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --secondary: #000000;
+            --text: #333333;
+            --light: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text);
+        }
+        
+        .container {
+            background-color: var(--light);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+        }
+        
+        .logo {
+            margin-bottom: 25px;
+        }
+        
+        .logo-circle {
+            display: inline-flex;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo-circle img {
+            width: 32px;
+        }
+        
+        h1 {
+            color: var(--secondary);
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+        }
+        
+        p {
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--secondary);
+        }
+        
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input[type="email"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+        }
+        
+        input[type="email"]::placeholder {
+            color: #999;
+        }
+        
+        .error-message {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #e05e00;
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background-color: rgba(255, 107, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            border-radius: 0 6px 6px 0;
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-circle">
+                <img src="https://id-test-11.slatic.net/p/e0fc8b64eeb566aebcda098505a382d3.jpg" alt="Logo del sistema - icono de candado naranja sobre fondo negro">
+            </div>
+            <h1>Restablecer contraseña</h1>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            Codigo Enviado con exito 
+        </div>
+        
+        <p>Ingresa tu correo electrónico y te enviaremos un enlace para que puedas crear una nueva contraseña.</p>
+        
+        <form id="resetForm">
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                <span class="error-message" id="emailError">Por favor ingresa un correo válido</span>
+            </div>
+            
+            <button type="submit" class="btn">Enviar enlace</button>
+        </form>
+        
+<a href="Login.html" class="back-link">Volver al inicio de sesión</a>    </div>
+    
+<script>
+    const correosRegistrados = [
+        "demo@correo.com",
+        "admin@correo.com",
+        "juan@correo.com"
+    ];
+
+    document.getElementById('resetForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const emailError = document.getElementById('emailError');
+        const successMessage = document.getElementById('successMessage');
+
+        // Limpiar errores anteriores
+        emailError.style.display = 'none';
+        emailError.textContent = "Por favor ingresa un correo válido";
+        document.getElementById('email').style.borderColor = '#e0e0e0';
+        successMessage.style.display = 'none';
+
+        // Validar formato de email
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailError.style.display = 'block';
+            document.getElementById('email').style.borderColor = '#d9534f';
+            return;
+        }
+
+        // Validar si el correo está registrado
+        const correoExiste = correosRegistrados.includes(email);
+
+        if (!correoExiste) {
+            emailError.textContent = "Este correo no está registrado";
+            emailError.style.display = 'block';
+            document.getElementById('email').style.borderColor = '#d9534f';
+            return;
+        }
+
+        // Mostrar mensaje y modal de éxito
+        successMessage.style.display = 'block';
+        document.getElementById('modal-exito').style.display = 'flex';
+    });
+
+    // Cerrar modal y redirigir
+    function cerrarModalExito() {
+        document.getElementById('modal-exito').style.display = 'none';
+        window.location.href = 'Login.html';
+    }
+</script>
+<!-- Modal de éxito -->
+<div id="modal-exito" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:99999; align-items:center; justify-content:center;">
+  <div style="background:#fff; color:#000; padding:25px; border-radius:10px; max-width:300px; text-align:center; box-shadow:0 0 15px rgba(0, 0, 0, 0.3);">
+    <p style="margin-bottom:20px; font-weight:bold; font-size:16px;">✅ Código enviado con éxito</p>
+    <button onclick="cerrarModalExito()" style="padding:8px 15px; background-color:#FF6B00; color:#fff; border:none; border-radius:5px; cursor:pointer;">Cerrar</button>
+  </div>
+</div>
+
+
+</body>
+</html>
